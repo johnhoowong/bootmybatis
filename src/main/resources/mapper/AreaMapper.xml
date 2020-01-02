@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.johnhoo.bootmybatis.dao.AreaDAO">
+    <select id="queryArea" resultType="com.johnhoo.bootmybatis.pojo.Area"><!--resultType：返回的实体类型-->
+        SELECT area_id,area_name,priority,create_time,last_edit_time
+        FROM area
+        ORDER BY priority
+        DESC
+    </select>
+    <select id="queryAreaById" resultType="com.johnhoo.bootmybatis.pojo.Area">
+        SELECT area_id,area_name,priority,create_time,last_edit_time
+        FROM area
+        WHERE
+        area_id=#{areaId}
+    </select>
+    <!--useGeneratedKeys:插入成功则返回主键值-->
+    <insert id="insertArea" useGeneratedKeys="true" keyProperty="areaId" keyColumn="area_id"
+            parameterType="com.johnhoo.bootmybatis.pojo.Area">
+        INSERT INTO area(area_name, priority, create_time, last_edit_time)
+        VALUES(#{areaName},#{priority},#{createTime},#{lastEditTime})
+    </insert>
+    <update id="updateArea" parameterType="com.johnhoo.bootmybatis.pojo.Area">
+        UPDATE area
+        <set>
+            <if test="priority != null">priority = #{priority},</if>
+            <if test="areaName != null">area_name = #{areaName},</if>
+            <if test="lastEditTime != null">last_edit_time = #{lastEditTime}</if>
+        </set>
+        WHERE area_id = #{areaId}
+    </update>
+    <delete id="deleteArea">
+        DELETE FROM area WHERE area_id = #{areaId}
+    </delete>
+</mapper>
